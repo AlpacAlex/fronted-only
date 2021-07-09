@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>To-Do List</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="in.css">
+    </head>
+    <body>
+        <div id="todo">
+            <h1>ToDo</h1>
+           
+            <input type="text" id="input_task" placeholder="I want to...">
+            
+            <div id="buttons_and_sort">
+                <button class="all">All</button>
+                <button class="done">Done</button>
+                <button class="undone">Undone</button>
+                <span class="sort">Sort by Date</span>
+                <img id="up" src="https://img.icons8.com/ios-glyphs/30/000000/arrow.png"/>
+                <img id="down" src="https://img.icons8.com/ios-glyphs/30/000000/arrow.png"/>
+            </div>
+            <dl>
+                <dt>
+                    <label><input type="checkbox" />learn react
+                        <img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png"/>
+                        <span>10/04/2020</span>
+                    </label>
+                </dt>
+                <dt>
+                    <label><input type="checkbox" />make ToDo list
+                        <img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png"/>
+                        <span>10/04/2020</span>
+                    </label>
+                </dt>
+                <dt>
+                    <label><input type="checkbox" />learn react more
+                        <img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png"/>
+                        <span>10/04/2020</span>
+                    </label>
+                </dt>
+                <dt>
+                    <label><input type="checkbox" />authorization
+                        <img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png"/>
+                        <span>10/04/2020</span>
+                    </label>
+                </dt>
+                <dt>
+                    <label><input type="checkbox" />do samething
+                        <img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png"/>
+                        <span>10/04/2020</span>
+                    </label>
+                </dt>
+            </dl>
+            <div class="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#">1</a>
+                <a class="active" href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">&raquo;</a>
+            </div>
+        </div>
+    </body>
+</html>

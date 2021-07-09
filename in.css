@@ -1,0 +1,116 @@
+body {
+    text-align: center;
+    background-color:#222930;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    color: #E9E9E9;
+}
+
+
+/*вводим текст*/
+#input_text { 
+    box-sizing: border-box;   
+}
+/*работа с div*/
+#buttons_and_sort {
+    margin: 5px;
+}
+/*
+    работа с кнопками
+        меняем размер, цвет
+*/
+.all {
+    background-color:#4EB1BA;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 4px;
+}
+.done {
+    background-color: #4EB1BA;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 4px;
+}
+.undone {
+    background-color:#4EB1BA;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 4px;
+}
+/*  текст сортировки*/
+.sort {
+    margin-left: 30px;
+}
+/*  обработка картинок (стрелка вверх/вниз)*/
+#buttons_and_sort img {
+    height: 15px;
+    filter: invert(90%);
+}
+#buttons_and_sort img#up {
+    transform: rotate(90deg);
+}
+#buttons_and_sort img#down {
+    transform: rotate(-90deg);
+}
+
+/*
+работа со списоком
+    обработка лейбла
+*/
+label {
+    width: 100%;
+    display: block;
+    text-align: left;
+    border: 2px;
+    border-style: solid;
+    border-color:#4EB1BA;
+    font-size: 17px;
+    margin-bottom: 5px;
+    color: white;
+    border-radius: 6px;
+}
+/*      реализуем кастомный чекбокс*/
+input[type="checkbox"] { /* change "blue" browser chrome to yellow */
+    filter: invert(90%) hue-rotate(350deg) brightness(1.7);
+}
+/*      обработка картинки*/
+label img {
+    height: 20px;
+    float: right;
+    filter: invert(90%);
+}
+/*      работа с датой*/
+label span {
+    color: rgb(235, 219, 6);
+    margin-right: 5px;
+    float: right;
+}
+
+
+/*div пагинация*/
+.pagination {
+    display: block;
+    align-items: center;
+    justify-content: center;
+}
+/*      работа с ссылками*/
+.pagination a {
+    color: white;
+    float: none;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd; /* Gray */
+}
+/*          реализуем активную кнопку*/
+.pagination a.active {
+    background-color: #4EB1BA;
+    color: white;
+  }
+/*          подсветка числа(не активного) над мышкой*/
+.pagination a:hover:not(.active) {
+    background-color: #92d2d8;
+}
