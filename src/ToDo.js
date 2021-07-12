@@ -12,7 +12,6 @@ function ToDo({ todo, toggleTask, removeTask, updateTask }) {
         //let newText = newTextInput + newText
         console.log(todo.id);
         setChangeValue(newTextInput)
-        //console.log(newText)
         if (e.keyCode === 13) //27 - esc 13 - enter
         {
             updateTask(todo.id, newTextInput)
