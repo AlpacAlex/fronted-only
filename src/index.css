@@ -132,42 +132,27 @@ label span {
   float: right;
 }
 
-
-
-
-
-/*
-.App .item-todo {
-  padding: 14px;
-  width: 250px;
-  margin: 0 auto;
-  text-align: left;
-  margin-top: 15px;
-  background: linear-gradient(
-    90deg,
-    rgba(93, 12, 255, 1) 0%,
-    rgba(155, 0, 250, 1) 100%
-  );
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+/*div пагинация*/
+.pagination {
+  margin-top: 40px;
+  display: block;
+  align-items: center;
+  justify-content: center;
 }
-
-.App .item-todo .item-text {
-  display: inline-block;
-  cursor: pointer;
+/*      работа с ссылками*/
+.pagination a {
+  color: white;
+  float: none;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid #ddd; /* Gray */
 }
-
-
-
-.App .item-todo .item-delete {
-  display: inline-block;
-  cursor: pointer;
-  float: right;
-  font-size: 22px;
-  position: relative;
-  left: -4px;
-  bottom: 5px;
+/*          реализуем активную кнопку*/
+.pagination a.active {
+  background-color: #4EB1BA;
+  color: white;
 }
-*/
+/*          подсветка числа(не активного) над мышкой*/
+.pagination a:hover:not(.active) {
+  background-color: #92d2d8;
+}

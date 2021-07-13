@@ -7,7 +7,7 @@ function ToDo({ todo, toggleTask, removeTask, updateTask }) {
     const [changeValue, setChangeValue] = useState(todo.task)
 
     const handleChangeValue = (e) => {
-        console.log(e.target);
+        //console.log(e.target);
         const newTextInput = e.currentTarget.value;
         //let newText = newTextInput + newText
         console.log(todo.id);

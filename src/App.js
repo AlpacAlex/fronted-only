@@ -1,11 +1,13 @@
 import React from "react";
-import { useState } from 'react'
+import { useState } from 'react';
 import MenuToDo from "./MenuToDo";
-import ToDo from './ToDo'
-import ToDoForm from './ToDoForm'
+import ToDo from './ToDo';
+import ToDoForm from './ToDoForm';
+import Pagination from './Pagination';
 
 function App() {
   const [todos, setTodos] = useState([])
+  const [countPage, setCountPage] = useState([1])
   //const [complateTask, setComplateTask] = useState([])
   //const complateTask = []
 
@@ -28,7 +30,7 @@ function App() {
   const handleToggle = (id) => {
     setTodos([
       ...todos.map((todo) => 
-        todo.id === id ? { ...todo, complete: !todo.complete } : {...todo }
+        todo.id === id ? { ...todo, complete: !todo.complete } : { ...todo }
       )
     ])
   }
@@ -71,7 +73,43 @@ function App() {
       setTodos([...newUpdTask])
   }
 
+  // pagination function
+  const getTodo = () => {
+    return todos
+  }
+  
+  const updatePage = (newCount) => {
+    setCountPage([newCount])
+  }
 
+
+  const todoShow = todos.filter( (todo) => todo.isShow === true)
+  const lenTodoShow = todoShow.length
+  const countTodoOnPage = 5
+  function rangeShow() {
+      const range = []
+      let count = Math.trunc(lenTodoShow/countTodoOnPage)
+      if (lenTodoShow % countTodoOnPage) 
+      { 
+          count += 1; 
+      }
+          
+      
+      for (let i = 0; i < count; i++) {
+          const insiderange = []
+          for (let j = i * countTodoOnPage; j < ((i+1) * countTodoOnPage); j++) {
+              if (lenTodoShow <= j) break;
+              insiderange.push(j)
+          }
+          range.push(insiderange)
+      }
+      return range
+  }
+  function upPag() {
+    const len = rangeShow()
+    setCountPage([len])
+  }
+  upPag()
   return (
     <div className="App">
       <header>
@@ -86,18 +124,31 @@ function App() {
         sortByReversDate={sortByReversDate}
         />
       <dl>
-      {todos.map((todo) => 
-        
-            <ToDo
-              key={todo.id}
-              todo={todo}           
-              toggleTask={handleToggle}
-              removeTask={removeTask}
-              updateTask={updateTask}
-              />
-                 
+      {todos.map((todo) =>        
+        <ToDo
+          key={todo.id}
+          todo={todo}           
+          toggleTask={handleToggle}
+          removeTask={removeTask}
+          updateTask={updateTask}
+          />
+             
       )}
       </dl>
+      <div className="pagination">
+        <button>&laquo;</button>               
+        {countPage.map( (page) =>
+          <Pagination
+            key={page}
+            page={page}
+            getTodo={getTodo}
+            countTodoOnPage={5}
+          />)
+        }                     
+        <button>&raquo;</button>
+      </div>
+      
+
     </div>
   );
 }
