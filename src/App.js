@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import MenuToDo from "./MenuToDo";
 import ToDo from './ToDo';
 import ToDoForm from './ToDoForm';
@@ -7,14 +7,16 @@ import Pagination from './Pagination';
 
 function App() {
   const [todos, setTodos] = useState([])
-  const [countPage, setCountPage] = useState([1])
-  //const [complateTask, setComplateTask] = useState([])
-  //const complateTask = []
+  //const [currentTodo, setCurrentTodo] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  let totalRecords = todos.filter( (todo) => todo.isShow === true).length
+  const LIMIT = 5;
 
   const addTask = (userInput) => {
     if(userInput) {
       const newItem = {
-        id: new Date(),
+        id: Date.now(),
         task: userInput,
         complete: false,
         isShow: true
@@ -28,8 +30,9 @@ function App() {
   }
 
   const handleToggle = (id) => {
-    setTodos([
-      ...todos.map((todo) => 
+    //const findTodoOfId = todos.find( (todo) => todo.id === id)
+    setTodos([// TODO find
+      ...todos.map( (todo) => 
         todo.id === id ? { ...todo, complete: !todo.complete } : { ...todo }
       )
     ])
@@ -49,6 +52,8 @@ function App() {
       ...complateTask
       // ...todos.map( (todo) => todo.complete === true ? todo.isShow = true : todo.isShow = false)
     ])
+    onPageChanged(1, 1)
+
   }
   //console.log(todos)
   const showUncomplateTask = () => {
@@ -56,6 +61,7 @@ function App() {
     setTodos([
       ...unComplateTask
     ])
+    onPageChanged(1, 1)
   }
 
   const sortByDate = () => {
@@ -74,42 +80,30 @@ function App() {
   }
 
   // pagination function
-  const getTodo = () => {
-    return todos
-  }
   
-  const updatePage = (newCount) => {
-    setCountPage([newCount])
-  }
 
-
-  const todoShow = todos.filter( (todo) => todo.isShow === true)
-  const lenTodoShow = todoShow.length
-  const countTodoOnPage = 5
-  function rangeShow() {
-      const range = []
-      let count = Math.trunc(lenTodoShow/countTodoOnPage)
-      if (lenTodoShow % countTodoOnPage) 
-      { 
-          count += 1; 
-      }
-          
+  const onPageChanged = useCallback(
+    (event, page, maxPage=-1) => {
       
-      for (let i = 0; i < count; i++) {
-          const insiderange = []
-          for (let j = i * countTodoOnPage; j < ((i+1) * countTodoOnPage); j++) {
-              if (lenTodoShow <= j) break;
-              insiderange.push(j)
-          }
-          range.push(insiderange)
-      }
-      return range
-  }
-  function upPag() {
-    const len = rangeShow()
-    setCountPage([len])
-  }
-  upPag()
+      //event.preventDefault();
+      if (page < 1) page++;
+      if (maxPage !== -1 && page > maxPage) page--;
+      setCurrentPage(page);
+    },
+    [setCurrentPage]
+  );
+
+  const currentData = useMemo( () => {
+    const currentData = [...todos] // may be .slice()
+    .slice(
+      (currentPage - 1) * LIMIT,
+      (currentPage - 1) * LIMIT + LIMIT
+    );
+    return currentData;
+  }, [todos, currentPage])
+    
+ 
+
   return (
     <div className="App">
       <header>
@@ -124,7 +118,7 @@ function App() {
         sortByReversDate={sortByReversDate}
         />
       <dl>
-      {todos.map((todo) =>        
+      {currentData.map((todo) =>        
         <ToDo
           key={todo.id}
           todo={todo}           
@@ -136,16 +130,13 @@ function App() {
       )}
       </dl>
       <div className="pagination">
-        <button>&laquo;</button>               
-        {countPage.map( (page) =>
-          <Pagination
-            key={page}
-            page={page}
-            getTodo={getTodo}
-            countTodoOnPage={5}
-          />)
-        }                     
-        <button>&raquo;</button>
+        {totalRecords > 5 && <Pagination 
+          totalRecords={totalRecords}
+          pageLimit={LIMIT}
+          pageNeighbours={2}
+          onPageChanged={onPageChanged}
+          currentPage={currentPage}
+        />}
       </div>
       
 

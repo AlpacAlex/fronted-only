@@ -1,33 +1,58 @@
 import React from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
-function Pagination({page, getTodo, countTodoOnPage}) {
+const range = (from, to, step = 1) => {
+  let i = from;
+  const range = [];
 
-    // const todoShow = getTodo().filter( (todo) => todo.isShow === true)
-    // const lenTodoShow = todoShow.length
-    // function rangeShow() {
-    //     const range = []
-    //     let count = Math.trunc(lenTodoShow/countTodoOnPage)
-    //     if (lenTodoShow % countTodoOnPage) 
-    //     { 
-    //         count += 1; 
+  while (i <= to) {
+    range.push(i);
+    i += step;
+  }
+
+  return range;
+};
+
+function Pagination({totalRecords, pageLimit, pageNeighbours, onPageChanged, currentPage}) {
+    
+    // const [totalPages, setTotalPages] = useState(0);
+    // useEffect(() => {
+    //     function changePage() {
+    //         console.log("work effect")
+    //         setTotalPages(Math.ceil(totalRecords / pageLimit));
     //     }
-            
-        
-    //     for (let i = 0; i < count; i++) {
-    //         const insiderange = []
-    //         for (let j = i * countTodoOnPage; j < ((i+1) * countTodoOnPage); j++) {
-    //             if (lenTodoShow <= j) break;
-    //             insiderange.push(j)
-    //         }
-    //         range.push(insiderange)
-    //     }
-    //     return range
-    // }
+    //     changePage()
+    // });
+
+    
+
+    const pages = range(1, Math.ceil(totalRecords / pageLimit)) || [];
     
     return (
-        <button>{page}</button>
-    )
+        <nav aria-label="Countries Pagination">
+            <button
+            className="page-item"
+            onClick={(e) => onPageChanged(e, currentPage-1)}>
+                &laquo; 
+            </button>
+            {pages.map((page, index) => {
+            return (
+                <button
+                key={index}
+                className={`page-item${currentPage === page ? " active" : ""}`}
+                onClick={(e) => onPageChanged(e, page)}>
+                {page}
+                </button>
+            );
+            })}
+            <button
+            className="page-item"
+            onClick={(e) => onPageChanged(e, currentPage+1, pages.length)}>
+                &raquo;
+            </button>
+        </nav>
+);
+
     
 }
 

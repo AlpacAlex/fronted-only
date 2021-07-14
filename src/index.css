@@ -140,19 +140,22 @@ label span {
   justify-content: center;
 }
 /*      работа с ссылками*/
-.pagination a {
-  color: white;
+.pagination button {
+  color: black;
+  background-color: #4EB1BA;
   float: none;
   padding: 8px 16px;
   text-decoration: none;
-  border: 1px solid #ddd; /* Gray */
+  border: 1px solid #222930; /* Gray */
+  border-radius: 4px;
 }
 /*          реализуем активную кнопку*/
-.pagination a.active {
-  background-color: #4EB1BA;
-  color: white;
+.pagination button.active {
+  /* background-color: #368f97; */
+  border: 2px solid rgb(235, 219, 6);
+  color: black;
 }
 /*          подсветка числа(не активного) над мышкой*/
-.pagination a:hover:not(.active) {
+.pagination button:hover:not(.active) {
   background-color: #92d2d8;
 }
