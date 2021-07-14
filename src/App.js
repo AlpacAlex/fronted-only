@@ -7,10 +7,11 @@ import Pagination from './Pagination';
 
 function App() {
   const [todos, setTodos] = useState([])
-  //const [currentTodo, setCurrentTodo] = useState([])
+  const [currentTodo, setCurrentTodo] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
+  const [flag, setFlag] = useState(0) // 1 - complited 0 - uncompl
   
-  let totalRecords = todos.filter( (todo) => todo.isShow === true).length
+  let totalRecords = currentTodo.length // todos
   const LIMIT = 5;
 
   const addTask = (userInput) => {
@@ -19,64 +20,76 @@ function App() {
         id: Date.now(),
         task: userInput,
         complete: false,
-        isShow: true
+        //isShow: true
       }
       setTodos([...todos, newItem])
+      if(flag) {
+        setCurrentTodo([...currentTodo])  
+      } else {
+        setCurrentTodo([...currentTodo, newItem])  
+      }
+      
+      
     }
   }
 
   const removeTask = (id) => {
     setTodos([...todos.filter((todo) => todo.id !== id)])
+    setCurrentTodo([...todos.filter((todo) => todo.id !== id)])
+    if (!((totalRecords - 1) % LIMIT)) {
+      onPageChanged(1, currentPage - 1)
+    }
   }
 
   const handleToggle = (id) => {
-    //const findTodoOfId = todos.find( (todo) => todo.id === id)
-    setTodos([// TODO find
-      ...todos.map( (todo) => 
-        todo.id === id ? { ...todo, complete: !todo.complete } : { ...todo }
-      )
-    ])
+    const findId = todos.findIndex( (todo) => todo.id === id)
+    const copyTodo = [...todos]
+    copyTodo[findId].complete = !copyTodo[findId].complete
+    setCurrentTodo([...copyTodo])
+    setTodos([...copyTodo])
   }
 
   const showAllTask = () => {
-    const allTask = todos.map( (todo) => todo ? { ...todo, isShow: true } : false)
-    setTodos([
-      ...allTask
-    ]);
+    //const allTask = todos.map( (todo) => todo ? { ...todo, isShow: true } : false)
+    setCurrentTodo([...todos])
+    setTodos([...todos]);
+    setFlag(0)
   }
 
   const showComplateTask = () => {
-    //complateTask = [...todos]
-    const complateTask = todos.map( (todo) => todo.complete === true ? { ...todo, isShow: true} : { ...todo, isShow: false})
-    setTodos([
-      ...complateTask
-      // ...todos.map( (todo) => todo.complete === true ? todo.isShow = true : todo.isShow = false)
-    ])
+    //const complateTask = todos.filter( (todo) => todo.complete === true)
+    setCurrentTodo([...todos.filter( (todo) => todo.complete === true)])
     onPageChanged(1, 1)
-
+    setFlag(1)
   }
   //console.log(todos)
   const showUncomplateTask = () => {
-    const unComplateTask = todos.map( (todo) => todo.complete === false ? { ...todo, isShow: true} : { ...todo, isShow: false})
-    setTodos([
-      ...unComplateTask
-    ])
+    //const unComplateTask = [...todos]
+    setCurrentTodo([...todos.filter( (todo) => todo.complete === false)])
     onPageChanged(1, 1)
+    setFlag(0)
   }
 
   const sortByDate = () => {
-    const sortTodo = todos.sort( (a,b) => a.id - b.id)
-    setTodos([...sortTodo])
+    const sortTodo = [...todos]
+    sortTodo.sort( (a,b) => a.id - b.id)
+    setCurrentTodo([...sortTodo])
   }
 
   const sortByReversDate = () => {
-    const sortTodo = todos.sort( (a,b) => b.id - a.id)
-    setTodos([...sortTodo])
+    const sortTodo = [...todos]
+    sortTodo.sort( (a,b) => b.id - a.id)
+    setCurrentTodo([...sortTodo])
   }
 
   const updateTask = (id, upTask) => {
-      const newUpdTask = todos.map( (todo) => todo.id === id ? { ...todo, task: upTask} : { ...todo} )
-      setTodos([...newUpdTask])
+    const findId = todos.findIndex( (todo) => todo.id === id)
+    const copyTodo = [...todos]
+    copyTodo[findId].task = upTask
+
+    //const newUpdTask = todos.map( (todo) => todo.id === id ? { ...todo, task: upTask} : { ...todo} )
+    setTodos([...copyTodo])
+    setCurrentTodo([...copyTodo])
   }
 
   // pagination function
@@ -94,13 +107,13 @@ function App() {
   );
 
   const currentData = useMemo( () => {
-    const currentData = [...todos] // may be .slice()
+    const currentData = [...currentTodo] // may be .slice()
     .slice(
       (currentPage - 1) * LIMIT,
       (currentPage - 1) * LIMIT + LIMIT
     );
     return currentData;
-  }, [todos, currentPage])
+  }, [currentTodo, currentPage])
     
  
 
