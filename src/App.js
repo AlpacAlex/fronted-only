@@ -3,12 +3,8 @@ import { useState, useMemo, useCallback } from 'react';
 import MenuToDo from "./MenuToDo";
 import ToDo from './ToDo';
 import ToDoForm from './ToDoForm';
-//import Pagination from './Pagination';
-// material ui //
-import { Button } from '@material-ui/core';
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { Paper, Grid, Typography, Box } from "@material-ui/core";
-import { makeStyles, ThemeProvider, createTheme } from "@material-ui/core/styles";
+import { Paper, Grid, Box } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { Pagination } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
@@ -59,14 +55,14 @@ const styles = {
     margin: "auto",
     textAlign: "center",
     width: 500,
-    "background-color": "transparent"
+    backgroundColor: "transparent"
   },
   Header: {
     padding: 10,
     margin: "auto",
     textAlign: "center",
-    "font-size": 40,
-    "background-color": "transparent",
+    fontSize: 40,
+    backgroundColor: "transparent",
     color: "black"
   },
 };
@@ -214,13 +210,13 @@ function App() {
               />   
             )}
           <Box className={classes.root}>        
-            <Pagination 
+            {pages > 1 && <Pagination 
               count={pages}
               onChange={onPageChanged}
               defaultPage={1} 
               color="primary"
               classes={{ ul: classes.paginator }} 
-            />     
+            />}     
           </Box>
         </Grid>
       </Grid>

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Box, Button, IconButton, Grid } from '@material-ui/core';
+import { Box, Button, IconButton } from '@material-ui/core';
 import {VerticalAlignBottom, VerticalAlignTop} from '@material-ui/icons';
-import { flexbox } from '@material-ui/system';
 
 const styles = {
     Icon: {
@@ -20,7 +19,7 @@ const styles = {
         margin: "0 auto",
         textAlign: "center",
         width: 500,
-        "background-color": "transparent"
+        backgroundColor: "transparent"
     }
 };
 

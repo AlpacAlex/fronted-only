@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Paper, Grid, Typography, Box, Checkbox } from "@material-ui/core";
+import { Paper, Grid, Box, Checkbox, Input } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import { Delete, Build } from "@material-ui/icons";
+import { Delete } from "@material-ui/icons";
 
 
 const styles = {
@@ -63,7 +63,12 @@ function ToDo({ todo, toggleTask, removeTask, updateTask }) {
                     onClick={() => toggleTask(todo.id)}
                     color="secondary"
                 />
-                <Box component="span" style={styles.Todo}>{todo.task}</Box>
+                <Input 
+                    value={changeValue} 
+                    disableUnderline={true}
+                    onChange={handleChangeValue} 
+                    onKeyDown={handleChangeValue}
+                />
                 <Box component="span" style={styles.Date} textAlign="right" m={1}>{new Date(todo.id).toLocaleDateString()}</Box>
                 
                 <IconButton
