@@ -4,24 +4,10 @@ import MenuToDo from "./MenuToDo";
 import ToDo from './ToDo';
 import ToDoForm from './ToDoForm';
 import { Paper, Grid, Box } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { Pagination } from '@material-ui/lab';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      marginTop: theme.spacing(2),
-      display: "flex",
-      margin: "auto",
-      fontSize: 20
-    },
-  },
-  paginator: {
-    margin: "auto",
-    justifyContent: "center",
-    padding: "10px"
-  }
-}));
+import styles from "./myStyle";
+import useStyles from "./styleTheme";
 
 // const theme = createTheme({
 //   palette: {
@@ -35,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 //       hint: 'rgba(255, 255, 255, 0.38)'
 //     }
 //   },
-//   overrides: {
+//   overrides: { // так можно переписать все стили mui
 //     MuiInputLabel: {
 //       root: {
 //         color: "white"
@@ -43,29 +29,8 @@ const useStyles = makeStyles((theme) => ({
 //     }
 //   }
 // });
-//border: '#4EB1BA',
-//text: '#E9E9E9',
 
 
-
-
-const styles = {
-  Paper: {
-    padding: 20,
-    margin: "auto",
-    textAlign: "center",
-    width: 500,
-    backgroundColor: "transparent"
-  },
-  Header: {
-    padding: 10,
-    margin: "auto",
-    textAlign: "center",
-    fontSize: 40,
-    backgroundColor: "transparent",
-    color: "black"
-  },
-};
 
 
 function App() {
@@ -188,9 +153,9 @@ function App() {
   return (
     <Box className="App"> 
       <Grid container spacing={0}>
-        <Paper style={styles.Header} elevation={0}>ToDo: {todos.length}</Paper>
+        <Paper style={styles.App.Header} elevation={0}>ToDo: {todos.length}</Paper>
         <Grid item xs={12}>
-          <Paper style={styles.Paper}>
+          <Paper style={styles.App.Paper}>
             <ToDoForm addTask={addTask}/>
           </Paper>
           <MenuToDo

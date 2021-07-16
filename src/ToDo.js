@@ -2,25 +2,8 @@ import React, { useState } from "react";
 import { Paper, Grid, Box, Checkbox, Input } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import { Delete } from "@material-ui/icons";
+import styles from "./myStyle";
 
-
-const styles = {
-    Icon: {
-        float: "right"
-    },
-    Paper: {
-      margin: "auto",
-      padding: 10,
-      display: "flex",
-      alignItems: "center",
-      marginTop: 10,
-      width: 500
-    },
-    Date: {
-        fontSize: 20,
-        marginLeft: "auto"
-    }
-  };
 
 
 function ToDo({ todo, toggleTask, removeTask, updateTask }) {
@@ -56,7 +39,7 @@ function ToDo({ todo, toggleTask, removeTask, updateTask }) {
     
     return (
         <Grid item xs={12}>
-            <Paper elevation={2} style={styles.Paper}>
+            <Paper elevation={2} style={styles.ToDo.Paper}>
                 <Checkbox 
                     checked={todo.complete ? true : false}
                     onChange={()=>{}} 
@@ -68,11 +51,12 @@ function ToDo({ todo, toggleTask, removeTask, updateTask }) {
                     disableUnderline={true}
                     onChange={handleChangeValue} 
                     onKeyDown={handleChangeValue}
+                    style={{ width: "64%" }}
                 />
-                <Box component="span" style={styles.Date} textAlign="right" m={1}>{new Date(todo.id).toLocaleDateString()}</Box>
+                <Box component="span" style={styles.ToDo.Date} textAlign="right" m={1}>{new Date(todo.id).toLocaleDateString()}</Box>
                 
                 <IconButton
-                    style={styles.Icon}               
+                    style={styles.ToDo.Icon}               
                     color="secondary"
                     aria-label="Delete"
                     onClick={() => removeTask(todo.id)}

@@ -1,33 +1,13 @@
 import React from 'react';
 import { Box, Button, IconButton } from '@material-ui/core';
 import {VerticalAlignBottom, VerticalAlignTop} from '@material-ui/icons';
-
-const styles = {
-    Icon: {
-      marginLeft: "auto"
-    },
-    Paper: {
-      margin: "auto",
-      padding: 10,
-      display: "flex",
-      alignItems: "center",
-      marginTop: 10,
-      width: 500
-    },
-    MenuTodo: {
-        padding: 10,
-        margin: "0 auto",
-        textAlign: "center",
-        width: 500,
-        backgroundColor: "transparent"
-    }
-};
+import styles from "./myStyle";
 
 
 
 function MenuToDo({showAllTask, showComplateTask, showUncomplateTask, sortByDate, sortByReversDate}) {
     return (
-        <Box style={styles.MenuTodo}>
+        <Box style={styles.MenuToDo.MenuTodo}>
             <Button className="all" onClick={() => showAllTask()}>All</Button>
             <Button className="done" onClick={() => showComplateTask()}>Done</Button>
             <Button className="undone" onClick={() => showUncomplateTask()} style={{ marginRight: 90  }}>Undone</Button>
@@ -36,8 +16,8 @@ function MenuToDo({showAllTask, showComplateTask, showUncomplateTask, sortByDate
                 id="up"
                 color="primary"
                 aria-label="up bottom"
-                style={styles.Icon}
-                onClick={() => {}}
+                style={styles.MenuToDo.Icon}
+                onClick={() => {sortByDate()}}
             >
                 <VerticalAlignBottom fontSize="small" />
             </IconButton>
@@ -46,8 +26,8 @@ function MenuToDo({showAllTask, showComplateTask, showUncomplateTask, sortByDate
                 id="up"
                 color="primary"
                 aria-label="down bottom"
-                style={styles.Icon}
-                onClick={() => {}}
+                style={styles.MenuToDo.Icon}
+                onClick={() => {sortByReversDate()}}
             >
                 <VerticalAlignTop fontSize="small" />
             </IconButton>
