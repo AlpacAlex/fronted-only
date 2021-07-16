@@ -6,7 +6,7 @@ import styles from "./myStyle";
 
 
 
-function ToDo({ todo, toggleTask, removeTask, updateTask }) {
+function ToDo({ todo, done }) {
     //console.log(todo)
     //console.log(todo.isShow)
     const [changeValue, setChangeValue] = useState(todo.task)
@@ -25,7 +25,7 @@ function ToDo({ todo, toggleTask, removeTask, updateTask }) {
         {
             const isValid = validInputText.test(newTextInput);
             if (isValid) {
-                updateTask(todo.id, newTextInput)
+                done({ it: "updateTask", id: todo.id, upTask: newTextInput })
             } else {
                 setChangeValue(todo.task)
             }
@@ -43,7 +43,7 @@ function ToDo({ todo, toggleTask, removeTask, updateTask }) {
                 <Checkbox 
                     checked={todo.complete ? true : false}
                     onChange={()=>{}} 
-                    onClick={() => toggleTask(todo.id)}
+                    onClick={() => done({ it: "changeChecbox", id: todo.id })}
                     color="secondary"
                 />
                 <Input 
@@ -59,7 +59,7 @@ function ToDo({ todo, toggleTask, removeTask, updateTask }) {
                     style={styles.ToDo.Icon}               
                     color="secondary"
                     aria-label="Delete"
-                    onClick={() => removeTask(todo.id)}
+                    onClick={() => done({ it: "removeTask", id: todo.id })}
                 >
                     <Delete fontSize="small" />
                 </IconButton>

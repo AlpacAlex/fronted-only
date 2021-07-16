@@ -43,7 +43,95 @@ function App() {
   const LIMIT = 5;
   const classes = useStyles();
 
-  // material ui
+  const done = ({it, userInput = "", id = 0, upTask = ""}) => {//it, userInput = "", id = 0
+
+    let done = [...todos];
+    let curdone = [...currentTodo];
+
+    switch(it) {
+      case "addTask":
+        if(userInput) {
+          const newItem = {
+            id: Date.now(),
+            task: userInput,
+            complete: false,
+            //isShow: true
+          }
+          //setTodos([...todos, newItem])
+          done = [...todos];
+          done.push(newItem);
+          if(flag) {
+            //setCurrentTodo([...currentTodo]);
+            curdone = [...currentTodo];
+          } else {
+            //setCurrentTodo([...currentTodo, newItem]);
+            curdone = [...currentTodo];
+            curdone.push(newItem);
+          }
+        }
+        break;
+      case "removeTask":
+        if(id) {
+          //setTodos([...todos.filter((todo) => todo.id !== id)])
+          //setCurrentTodo([...todos.filter((todo) => todo.id !== id)])
+          done = [...todos.filter((todo) => todo.id !== id)];
+          curdone = [...todos.filter((todo) => todo.id !== id)];
+          if (!((totalRecords - 1) % LIMIT)) {
+            onPageChanged(1, currentPage - 1)
+          }
+        }
+        break;
+      case "changeChecbox":
+        if (id) {
+          const findId = todos.findIndex( (todo) => todo.id === id);
+          const copyTodo = [...todos];
+          copyTodo[findId].complete = !copyTodo[findId].complete;
+          done = [...copyTodo];
+          curdone = [...copyTodo];
+        }
+        break;
+      case "showAllTask":
+        done = [...todos];
+        curdone = [...todos];
+        setFlag(0)
+        break;
+      case "showComplateTask":
+        curdone = [...todos.filter( (todo) => todo.complete === true)]
+        onPageChanged(1, 1);
+        setFlag(1);
+        break;
+      case "showUncomplateTask":
+        curdone = [...todos.filter( (todo) => todo.complete === false)];
+        onPageChanged(1, 1);
+        setFlag(0);
+        break;
+      case "sortByDate":
+        const sortTodo = [...todos];
+        sortTodo.sort( (a,b) => a.id - b.id);
+        curdone = [...sortTodo];
+        break;
+      case "sortByReversDate":
+        const sortRevTodo = [...todos];
+        sortRevTodo.sort( (a,b) => b.id - a.id);
+        curdone = [...sortRevTodo];
+        break;
+      case "updateTask":
+        if (id && upTask) {
+          const findId = todos.findIndex( (todo) => todo.id === id);
+          const copyTodo = [...todos];
+          copyTodo[findId].task = upTask;
+          done = [...copyTodo];
+          curdone = [...copyTodo];
+        }
+        break;
+      default:
+        console.log("error done task");
+    }
+    setTodos(done);
+    setCurrentTodo(curdone);
+    
+  }
+  //done({it: "addTask",userInput: "fff", id: 2})
   
 
   const addTask = (userInput) => {
@@ -60,8 +148,6 @@ function App() {
       } else {
         setCurrentTodo([...currentTodo, newItem])  
       }
-      
-      
     }
   }
 
@@ -156,22 +242,16 @@ function App() {
         <Paper style={styles.App.Header} elevation={0}>ToDo: {todos.length}</Paper>
         <Grid item xs={12}>
           <Paper style={styles.App.Paper}>
-            <ToDoForm addTask={addTask}/>
+            <ToDoForm done={done}/>
           </Paper>
           <MenuToDo
-            showAllTask={showAllTask}
-            showComplateTask={showComplateTask}
-            showUncomplateTask={showUncomplateTask}
-            sortByDate={sortByDate}
-            sortByReversDate={sortByReversDate}
+            done = {done}
           />
           {currentData.map((todo) =>        
             <ToDo
               key={todo.id}
               todo={todo}           
-              toggleTask={handleToggle}
-              removeTask={removeTask}
-              updateTask={updateTask}
+              done={done}
               />   
             )}
           <Box className={classes.root}>        

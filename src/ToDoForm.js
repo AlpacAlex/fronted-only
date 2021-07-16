@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
+
+
 //import { makeStyles, ThemeProvider, createTheme } from "@material-ui/core/styles";
 
 
 
-function ToDoForm({ addTask }) {
+function ToDoForm({ done }) {
     const [userInput, setUserInput] = useState('')
     const validInputText = /^[\w\s]{0,25}$/gm;///^\w{0,15}$/gm;
 
@@ -22,7 +24,7 @@ function ToDoForm({ addTask }) {
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        addTask(userInput)
+        done({ it: "addTask", userInput: userInput })
         setUserInput("")
     }
 
