@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import Box from "@material-ui/core/Box";
 
 
 
@@ -25,24 +27,26 @@ function ToDoForm({ done }) {
 
     
     return (
-        <form onSubmit={handleSubmit} style={{ display: "flex" }} noValidate autoComplete="off">
-            <TextField 
-            type="text"
-            onChange={handleChange}
-            value={userInput}
-            id="outlined-basic" 
-            label="Введите значение..." 
-            variant="outlined" 
-            style={{ width: "80%" }}/>
-            <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                style={{ width: "20%" }}
-                >
-                Создать
-            </Button>
-        </form>
+        <FormControl component="form" onSubmit={handleSubmit} style={{ display: "flex" }} noValidate autoComplete="off">
+            <Box style={{ display: "flex" }}>
+                <TextField 
+                type="text"
+                onChange={handleChange}
+                value={userInput}
+                id="outlined-basic" 
+                label="Введите значение..." 
+                variant="outlined" 
+                style={{ width: "80%" }}/>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    style={{ width: "20%" }}
+                    >
+                    Создать
+                </Button>
+            </Box>
+        </FormControl>
     )
 }
 
