@@ -7,7 +7,7 @@ import { Paper, Grid, Box } from "@material-ui/core";
 import { Pagination } from '@material-ui/lab';
 import styles from "./myStyle";
 import useStyles from "./styleTheme";
-
+const axios = require('axios');
 
 
 function App() {
