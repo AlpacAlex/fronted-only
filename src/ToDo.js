@@ -7,34 +7,26 @@ import styles from "./myStyle";
 
 
 function ToDo({ todo, done }) {
-    //console.log(todo)
-    //console.log(todo.isShow)
-    const [changeValue, setChangeValue] = useState(todo.task)
+    const [changeValue, setChangeValue] = useState(todo.task);
     const validInputText = /^[\w\s]{1,18}$/gm;
 
     const handleChangeValue = (e) => {
-        //console.log(e.target);
         const newTextInput = e.currentTarget.value;
-        //let newText = newTextInput + newText
-        //console.log(todo.id);
-        
-        
-        setChangeValue(newTextInput)
-        
-        if (e.keyCode === 13) //27 - esc 13 - enter
+        setChangeValue(newTextInput);
+        if (e.keyCode === 13)
         {
             const isValid = validInputText.test(newTextInput);
             if (isValid) {
-                done({ it: "updateTask", id: todo.id, upTask: newTextInput })
+                done({ it: "updateTask", id: todo.id, upTask: newTextInput });
             } else {
-                setChangeValue(todo.task)
+                setChangeValue(todo.task);
             }
-            document.activeElement.blur()
+            document.activeElement.blur();
         } else if (e.keyCode === 27) {
-            setChangeValue(todo.task)
-            document.activeElement.blur()
+            setChangeValue(todo.task);
+            document.activeElement.blur();
         }
-    }
+    };
 
     
     return (
@@ -54,7 +46,6 @@ function ToDo({ todo, done }) {
                     style={{ width: "64%" }}
                 />
                 <Box component="span" style={styles.ToDo.Date} textAlign="right" m={1}>{new Date(todo.id).toLocaleDateString()}</Box>
-                
                 <IconButton
                     style={styles.ToDo.Icon}               
                     color="secondary"

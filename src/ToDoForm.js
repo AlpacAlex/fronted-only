@@ -3,15 +3,10 @@ import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 
 
-//import { makeStyles, ThemeProvider, createTheme } from "@material-ui/core/styles";
-
-
 
 function ToDoForm({ done }) {
-    const [userInput, setUserInput] = useState('')
-    const validInputText = /^[\w\s]{0,25}$/gm;///^\w{0,15}$/gm;
-
-    //const classes = useStyles();
+    const [userInput, setUserInput] = useState('');
+    const validInputText = /^[\w\s]{0,25}$/gm;
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -20,13 +15,13 @@ function ToDoForm({ done }) {
         if (isValid) {
             setUserInput(e.currentTarget.value)
         }     
-    }
+    };
     
     const handleSubmit = (e) => {
         e.preventDefault()
         done({ it: "addTask", userInput: userInput })
         setUserInput("")
-    }
+    };
 
     
     return (

@@ -21,7 +21,6 @@ function MenuToDo({ done }) {
             >
                 <VerticalAlignBottom fontSize="small" />
             </IconButton>
-
             <IconButton
                 id="up"
                 color="primary"
