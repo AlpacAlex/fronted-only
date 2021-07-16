@@ -19,6 +19,16 @@ function App() {
   let totalRecords = currentTodo.length;
   const LIMIT = 5;
   const classes = useStyles();
+  const URL = "https://todo-api-learning.herokuapp.com";
+
+  const executeRequest  = async ({method, userId = "1", uuid = "", body = "{}"}) => {
+    switch(method) {
+      case "get":
+        const GET_REQUEST = `/v1/tasks/${userId}`;
+        const urlAdres = URL + GET_REQUEST;
+        
+    }
+  }
 
   const done = ({it, userInput = "", id = 0, upTask = ""}) => {
 
