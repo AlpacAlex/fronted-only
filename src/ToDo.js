@@ -7,7 +7,7 @@ import styles from "./myStyle";
 
 
 function ToDo({ todo, done }) {
-    const [changeValue, setChangeValue] = useState(todo.task);
+    const [changeValue, setChangeValue] = useState(todo.name);
     const validInputText = /^[\w\s]{1,18}$/gm;
 
     const handleChangeValue = (e) => {
@@ -17,25 +17,25 @@ function ToDo({ todo, done }) {
         {
             const isValid = validInputText.test(newTextInput);
             if (isValid) {
-                done({ it: "updateTask", id: todo.id, upTask: newTextInput });
+                done({ it: "updateTask", complete: todo.done, uuid: todo.uuid, upTask: newTextInput });
             } else {
-                setChangeValue(todo.task);
+                setChangeValue(todo.name);
             }
             document.activeElement.blur();
         } else if (e.keyCode === 27) {
-            setChangeValue(todo.task);
+            setChangeValue(todo.name);
             document.activeElement.blur();
         }
     };
 
-    
+    //{it, userInput = "", complete = -1, uuid = 0, upTask = "" }
     return (
         <Grid item xs={12}>
             <Paper elevation={2} style={styles.ToDo.Paper}>
                 <Checkbox 
-                    checked={todo.complete ? true : false}
+                    checked={todo.done ? true : false}
                     onChange={()=>{}} 
-                    onClick={() => done({ it: "changeChecbox", id: todo.id })}
+                    onClick={() => done({ it: "changeChecbox", userInput: todo.name, complete: todo.done, uuid: todo.uuid })}
                     color="secondary"
                 />
                 <Input 
@@ -45,12 +45,12 @@ function ToDo({ todo, done }) {
                     onKeyDown={handleChangeValue}
                     style={{ width: "64%" }}
                 />
-                <Box component="span" style={styles.ToDo.Date} textAlign="right" m={1}>{new Date(todo.id).toLocaleDateString()}</Box>
+                <Box component="span" style={styles.ToDo.Date} textAlign="right" m={1}>{new Date(todo.createdAt).toLocaleDateString()}</Box>
                 <IconButton
                     style={styles.ToDo.Icon}               
                     color="secondary"
                     aria-label="Delete"
-                    onClick={() => done({ it: "removeTask", id: todo.id })}
+                    onClick={() => done({ it: "removeTask", uuid: todo.uuid })}
                 >
                     <Delete fontSize="small" />
                 </IconButton>
