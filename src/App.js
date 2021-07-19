@@ -14,7 +14,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [currentTodo, setCurrentTodo] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [flag, setFlag] = useState(0); 
+  //const [flag, setFlag] = useState(0); 
   
   let totalRecords = currentTodo.length;
   const LIMIT = 5;
@@ -29,6 +29,13 @@ function App() {
         try {
           const response = await axios.get(urlAdres)
           console.log(response)
+          if (response.status === 200) {
+            return response.data
+            // const a = [...response.data]
+            // setTodos([...response.data])
+          } else {
+            //snack bar
+          }
         } catch (error) {
           console.error(error)
         }
@@ -43,6 +50,11 @@ function App() {
               done: done
             });
             console.log(response);
+            if (response.status === 200) {
+              return response.data; 
+            } else {
+              //snack bar flag error
+            }
           } catch (error) {
             console.error(error);
           }
@@ -58,6 +70,11 @@ function App() {
               done: done
             });
             console.log(response);
+            if (response.status === 200) {
+              return response.data; 
+            } else {
+              //snack bar flag error
+            }
           } catch (error) {
             console.log(error);
           }
@@ -74,94 +91,113 @@ function App() {
               done: done
             });
             console.log(response);
+            if (response.status === 204) {
+              return response; 
+            } else {
+              //snack bar flag error
+            }
           } catch (error) {
             console.log(error);
           }
         }
         break;
+      default:
+        console.log("method? error | default")
     }
     return true;
   }
 
-  const done = ({it, userInput = "", id = 0, upTask = ""}) => {
+  const done = async ({it, userInput = "", uuid = 0, upTask = "", complete = -1}) => {
 
-    let done = [...todos];
+    //let done = [...todos];
     let curdone = [...currentTodo];
 
     switch(it) {
       case "addTask":
         if(userInput) {
-          const newItem = {
-            id: Date.now(),
-            task: userInput,
-            complete: false,
-          };
-          done = [...todos];
-          done.push(newItem);
-          if(flag) {
-            curdone = [...currentTodo];
-          } else {
-            curdone = [...currentTodo];
-            curdone.push(newItem);
-          }
+          await executeRequest({ method: "post"}, { task: userInput });
+          // const newItem = {
+          //   id: allTask.createdAt,
+          //   task: userInput, //allTask.name
+          //   complete: allTask.done,
+          //   uuid: allTask.uuid
+          // };
+          const allTask = await executeRequest({method: "get"}, {});
+          curdone = [...allTask];
+          //done.push(newItem);
+          // if(flag) {
+          //   curdone = [...currentTodo];
+          // } else {
+          //   curdone = [...currentTodo];
+          //   curdone.push(newItem);
+          // }
         }
         break;
       case "removeTask":
-        if(id) {
-          done = [...todos.filter((todo) => todo.id !== id)];
-          curdone = [...todos.filter((todo) => todo.id !== id)];
+        if(uuid) {
+          //done = [...todos.filter((todo) => todo.id !== id)];
+          //curdone = [...todos.filter((todo) => todo.id !== id)];
+          await executeRequest({ method: "delete", uuid: uuid }, { });
+          const allTask = await executeRequest({method: "get"}, {});
+          curdone = [...allTask];
+
           if (!((totalRecords - 1) % LIMIT)) {
             onPageChanged(1, currentPage - 1);
           }
         }
         break;
       case "changeChecbox":
-        if (id) {
-          const findId = todos.findIndex( (todo) => todo.id === id);
-          const copyTodo = [...todos];
-          copyTodo[findId].complete = !copyTodo[findId].complete;
-          done = [...copyTodo];
-          curdone = [...copyTodo];
+        if (uuid && complete !== -1) {
+          await executeRequest({method: "patch", uuid: uuid }, { task: name, done: !complete });
+          const allTask = await executeRequest({method: "get"}, {});
+          curdone = [...allTask];
         }
         break;
       case "showAllTask":
-        done = [...todos];
-        curdone = [...todos];
-        setFlag(0);
+        const allTask = await executeRequest({method: "get"}, {});
+        curdone = [...allTask];
+        //setFlag(0);
         break;
       case "showComplateTask":
-        curdone = [...todos.filter( (todo) => todo.complete === true)];
+        const allTask = await executeRequest({method: "get"}, {});
+        curdone = [...allTask.filter( (todo) => todo.done === true)];
+        //curdone = [...todos.filter( (todo) => todo.complete === true)];
         onPageChanged(1, 1);
-        setFlag(1);
+        //setFlag(1);
         break;
       case "showUncomplateTask":
-        curdone = [...todos.filter( (todo) => todo.complete === false)];
+        const allTask = await executeRequest({method: "get"}, {});
+        curdone = [...allTask.filter( (todo) => todo.done === false)];
+        //curdone = [...todos.filter( (todo) => todo.complete === false)];
         onPageChanged(1, 1);
         setFlag(0);
         break;
       case "sortByDate":
-        const sortTodo = [...todos];
-        sortTodo.sort( (a,b) => a.id - b.id);
+        const allTask = await executeRequest({method: "get"}, {});
+        const sortTodo = [...allTask];
+        sortTodo.sort( (a,b) => Date.parse(a.createdAt) - Date.parse(b.createdAt) );
         curdone = [...sortTodo];
         break;
       case "sortByReversDate":
-        const sortRevTodo = [...todos];
-        sortRevTodo.sort( (a,b) => b.id - a.id);
-        curdone = [...sortRevTodo];
+        const allTask = await executeRequest({method: "get"}, {});
+        const sortTodo = [...allTask];
+        sortTodo.sort( (a,b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) );
+        curdone = [...sortTodo];
         break;
       case "updateTask":
-        if (id && upTask) {
-          const findId = todos.findIndex( (todo) => todo.id === id);
-          const copyTodo = [...todos];
-          copyTodo[findId].task = upTask;
-          done = [...copyTodo];
-          curdone = [...copyTodo];
+        if (uuid && upTask) {
+          // const findId = todos.findIndex( (todo) => todo.uuid === uuid);
+          // const copyTodo = [...todos];
+          // copyTodo[findId].task = upTask;
+          // done = [...copyTodo];
+          // curdone = [...copyTodo];
+          await executeRequest({method: "patch", uuid: currentTodo.uuid }, { task: upTask, done: currentTodo.done });
         }
         break;
       default:
         console.log("error done task");
     }
-    setTodos(done);
+    //setTodos(done);
     setCurrentTodo(curdone);
   };
   
@@ -186,13 +222,20 @@ function App() {
   const pages = Math.ceil(totalRecords / LIMIT) || 0;
  
   useEffect( async () => {
+    async function deleteAll() {
+      const allTask = await executeRequest({method: "get"}, {});
+      for (let i = 0; i < allTask.length; i++) {
+        await executeRequest({method: "delete", uuid: allTask[i].uuid }, { });
+      }
+    }
+    //deleteAll();
     await executeRequest({method: "get"}, {});
     //await executeRequest({ method: "post"}, { task: "test 1" });
-    await executeRequest({method: "patch", uuid: "0b1f790c-899d-44de-98c3-19c352acb8a8"}, { task: "update test 1", done: true });
+    //await executeRequest({method: "patch", uuid: "0b1f790c-899d-44de-98c3-19c352acb8a8"}, { task: "update test 1", done: true });
     //await executeRequest({method: "get"}, {});
-    await executeRequest({method: "delete", uuid: "0b1f790c-899d-44de-98c3-19c352acb8a8"}, { task: "update test 1", done: true });//204(нет контента) все равно, но удаляет
+    //await executeRequest({method: "delete", uuid: "0b1f790c-899d-44de-98c3-19c352acb8a8"}, { task: "update test 1", done: true });//204(нет контента) все равно, но удаляет
     //await executeRequest({method: "delete", uuid: "0b1f790c-899d-44de-98c3-19c352acb8a8"}, { });// удалил без параметров тела
-    await executeRequest({method: "get"}, {});
+    //await executeRequest({method: "get"}, {});
   }, []);
 
   return (
