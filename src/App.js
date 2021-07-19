@@ -3,17 +3,27 @@ import { useState, useMemo, useCallback } from 'react';
 import MenuToDo from "./MenuToDo";
 import ToDo from './ToDo';
 import ToDoForm from './ToDoForm';
-import { Paper, Grid, Box } from "@material-ui/core";
+import { Paper, Grid, Box, Snackbar } from "@material-ui/core";
 import { Pagination } from '@material-ui/lab';
+import MuiAlert from '@material-ui/lab/Alert';
 import styles from "./myStyle";
 import useStyles from "./styleTheme";
 const axios = require('axios');
 
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function App() {
   const [todos, setTodos] = useState([]);
   const [currentTodo, setCurrentTodo] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [error, setError] = useState({
+    er: false,
+    msg: null
+  });
   //const [flag, setFlag] = useState(0); 
   
   let totalRecords = currentTodo.length;
@@ -35,9 +45,17 @@ function App() {
             // setTodos([...response.data])
           } else {
             //snack bar
+            // setError({
+            //   er: true,
+            //   msg: "error get request"
+            // })
           }
         } catch (error) {
           console.error(error)
+          setError({
+            er: true,
+            msg: "error get request"
+          })
         }
         break;
       case "post":
@@ -57,6 +75,10 @@ function App() {
             }
           } catch (error) {
             console.error(error);
+            setError({
+              er: true,
+              msg: "error post request"
+            })
           }
         }
         break;
@@ -77,6 +99,10 @@ function App() {
             }
           } catch (error) {
             console.log(error);
+            setError({
+              er: true,
+              msg: "error patch request"
+            })
           }
         }
         break;
@@ -98,6 +124,10 @@ function App() {
             }
           } catch (error) {
             console.log(error);
+            setError({
+              er: true,
+              msg: "error delete request"
+            })
           }
         }
         break;
@@ -183,6 +213,15 @@ function App() {
     [setCurrentPage]
   );
 
+  const handleCloseToast = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setError(false);
+  };
+
+
   const currentData = useMemo( () => {
     const currentData = [...currentTodo]
     .slice(
@@ -242,6 +281,11 @@ function App() {
             />}     
           </Box>
         </Grid>
+          <Snackbar open={error.er} autoHideDuration={3000} onClose={handleCloseToast}>
+            <Alert onClose={handleCloseToast} severity="error">
+              {error.msg}
+            </Alert>
+        </Snackbar>
       </Grid>
     </Box>
   );
