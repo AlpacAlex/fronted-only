@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useMemo, useCallback } from 'react';
 import MenuToDo from "./MenuToDo";
 import ToDo from './ToDo';
@@ -21,13 +21,66 @@ function App() {
   const classes = useStyles();
   const URL = "https://todo-api-learning.herokuapp.com";
 
-  const executeRequest  = async ({method, userId = "1", uuid = "", body = "{}"}) => {
+  const executeRequest  = async ({method, userId = "1", uuid = ""}, {task = "", done = false }) => {
     switch(method) {
       case "get":
         const GET_REQUEST = `/v1/tasks/${userId}`;
         const urlAdres = URL + GET_REQUEST;
-        
+        try {
+          const response = await axios.get(urlAdres)
+          console.log(response)
+        } catch (error) {
+          console.error(error)
+        }
+        break;
+      case "post":
+        if (task) {
+          const GET_REQUEST = `/v1/task/${userId}`;
+          const urlAdres = URL + GET_REQUEST;
+          try {
+            const response = await axios.post(urlAdres, {
+              name: task,
+              done: done
+            });
+            console.log(response);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        break;
+      case "patch":
+        if (uuid) {
+          const GET_REQUEST = `/v1/task/${userId}/${uuid}`;
+          const urlAdres = URL + GET_REQUEST;
+          try {
+            const response = await axios.patch(urlAdres, {//проверку на статус и возвращение? данных(data)
+              name: task,
+              done: done
+            });
+            console.log(response);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        break;
+      case "delete":
+        if (uuid) {
+          const GET_REQUEST = `/v1/task/${userId}/${uuid}`;
+          const urlAdres = URL + GET_REQUEST;
+          try {
+            const response = await axios.delete(urlAdres, {//проверку на статус и возвращение? данных(data)
+              uuid: uuid,
+              name: task,
+              done: done
+            });
+            console.log(response);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        break;
     }
+    return true;
   }
 
   const done = ({it, userInput = "", id = 0, upTask = ""}) => {
@@ -132,6 +185,16 @@ function App() {
 
   const pages = Math.ceil(totalRecords / LIMIT) || 0;
  
+  useEffect( async () => {
+    await executeRequest({method: "get"}, {});
+    //await executeRequest({ method: "post"}, { task: "test 1" });
+    await executeRequest({method: "patch", uuid: "0b1f790c-899d-44de-98c3-19c352acb8a8"}, { task: "update test 1", done: true });
+    //await executeRequest({method: "get"}, {});
+    await executeRequest({method: "delete", uuid: "0b1f790c-899d-44de-98c3-19c352acb8a8"}, { task: "update test 1", done: true });//204(нет контента) все равно, но удаляет
+    //await executeRequest({method: "delete", uuid: "0b1f790c-899d-44de-98c3-19c352acb8a8"}, { });// удалил без параметров тела
+    await executeRequest({method: "get"}, {});
+  }, []);
+
   return (
     <Box className="App"> 
       <Grid container spacing={0}>
